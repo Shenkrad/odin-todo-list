@@ -16,12 +16,12 @@ export const controller = (() =>  {
 
     function addProject(projectName){
         storage.addProject(projectName);
-        pubsub.emit("project:added", { projectName });
+        pubsub.emit("project:added", projectName);
     }
 
     function removeProject(projectName){
         storage.removeProject(projectName);
-        pubsub.emit("project:removed", { projectName });
+        pubsub.emit("project:removed", projectName);
     }
 
     return { init, removeProject, addProject };

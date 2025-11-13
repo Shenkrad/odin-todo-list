@@ -6,7 +6,9 @@ import { pubsub } from "./assets/js/pubsub";
 pubsub.on("project:added", render.projectAdded);
 pubsub.on("task:added", render.taskAdded);
 pubsub.on("app:ready", render.init);
-pubsub.on("project:removed", controller.removeProject);
+pubsub.on("ui:remove-project", controller.removeProject);
+pubsub.on("ui:add-project", controller.addProject);
+pubsub.on("project:removed", render.projectRemoved);
 
 //load app
 controller.init();

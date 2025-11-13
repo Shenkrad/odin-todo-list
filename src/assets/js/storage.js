@@ -30,7 +30,7 @@ export const storage = (() => {
     function removeProject(name) {
         const state = getState();
         
-        if (!state[name]) throw new Error("Project id not found");
+        if (!state.hasOwnProperty(name)) throw new Error("Project name not found");
         if (name === "default") throw new Error("Unable to delete default project");
 
         delete state[name];
