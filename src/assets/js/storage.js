@@ -1,0 +1,42 @@
+
+// singleton storage
+export const storage = (() => {
+
+    const STORAGE_KEY = "data";
+    
+    function saveState(data) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+
+    function getState() {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY))  || {};
+    }
+
+    function addTask(pid, newTask) {
+        const state = getState();
+        if (!state[pid]) throw new Error("Invalid project id");
+        state[pid].tasks.push(newTask);
+
+        saveState(state);
+    }
+
+    function addProject(name) {
+       const state = getState();
+       state[name] = {};
+
+       saveState(state);
+    }
+
+    function removeProject(name) {
+        const state = getState();
+        
+        if (!state[name]) throw new Error("Project id not found");
+        if (name === "default") throw new Error("Unable to delete default project");
+
+        delete state[name];
+        saveState(state);
+    }
+
+    return { getState, addTask, addProject, removeProject };
+
+})();
