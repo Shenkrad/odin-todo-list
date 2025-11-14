@@ -5,15 +5,18 @@ import { pubsub } from "./pubsub";
 export const render = (() => {
     const sidebar = document.querySelector(".sidebar");
     const buttonNewProject = document.querySelector("#btn-new-project");
-    const newProjectOverlay = document.getElementById("modal-overlay");
-    const newProjectNameInput = document.getElementById("modal-project-name");
-    const newProjectConfirmBtn = document.getElementById("modal-confirm");
-    const newProjectCancelBtn = document.getElementById("modal-cancel");
+    const newProjectOverlay = document.querySelector("#modal-overlay");
+    const newProjectNameInput = document.querySelector("#modal-project-name");
+    const newProjectConfirmBtn = document.querySelector("#modal-confirm");
+    const newProjectCancelBtn = document.querySelector("#modal-cancel");
+    const activeProjectNameElement = document.querySelector("#activeProjectName");
 
     function init(state) {
-        for(const [pid,value] of Object.entries(state)){
+        for(const [pid,value] of Object.entries(state.data)){
             projectAdded(pid);
         }
+        
+        activeProjectNameElement.textContent = state.default_project;
     }
 
     function projectAdded( pid ) {
@@ -32,7 +35,11 @@ export const render = (() => {
         projectRow.appendChild(buttonRemove);
         sidebar.appendChild(projectRow);
 
-        // bind event
+        // bind events
+        buttonProject.addEventListener("click", (e) => {
+            pubsub.emit("ui:change-active-project", pid);
+        });
+
         buttonRemove.addEventListener("click", e => {
             pubsub.emit("ui:remove-project",  pid);
         });
@@ -41,6 +48,10 @@ export const render = (() => {
     function projectRemoved(pid) {
         const projectRow = document.querySelector(`#project_${pid}`);
         sidebar.removeChild(projectRow);
+    }
+
+    function onChangeactiveProject(project) {
+        activeProjectNameElement.textContent = project.name;
     }
 
     function taskAdded({ pid, task }) {
@@ -77,5 +88,5 @@ export const render = (() => {
         pubsub.emit("ui:add-project", newProjectNameInput.value.trim());
     });
 
-    return { projectAdded, taskAdded, init, openProjectModal, closeProjectModal, projectRemoved };
+    return { projectAdded, taskAdded, init, openProjectModal, closeProjectModal, projectRemoved, onChangeactiveProject };
 })();

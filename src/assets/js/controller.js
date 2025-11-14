@@ -4,17 +4,21 @@ import { pubsub } from "./pubsub";
 // singleton controller
 export const controller = (() =>  {
 
+    const DEFAULT_PROJECT = 'default';
+    let activeProject = DEFAULT_PROJECT;
+
     function init(){
         if (Object.keys(storage.getState()).length === 0) setFreshStartData();
         // storage.addTask("default", new Task('New task', 'This is a test tasks', new Date("17 December, 2025 00:00:00"), "normal", "Finish it ASAP!", false));
-        pubsub.emit("app:ready", storage.getState());
+        pubsub.emit("app:ready", {default_project: DEFAULT_PROJECT, data: storage.getState() });
     }
 
     function setFreshStartData(){
-        storage.addProject('default');
+        storage.addProject(DEFAULT_PROJECT);
     }
 
     function addProject(projectName){
+        if (storage.checkIfProjectExists(projectName)) throw new Error("Project already exists");
         storage.addProject(projectName);
         pubsub.emit("project:added", projectName);
     }
@@ -24,5 +28,10 @@ export const controller = (() =>  {
         pubsub.emit("project:removed", projectName);
     }
 
-    return { init, removeProject, addProject };
+    function changeActiveProject(projectName) {
+        activeProject = projectName;
+        pubsub.emit("project:active-changed", { name:projectName, data: storage.getProject(projectName) });
+    }
+
+    return { init, removeProject, addProject, changeActiveProject };
 })();

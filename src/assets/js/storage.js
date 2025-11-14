@@ -37,6 +37,19 @@ export const storage = (() => {
         saveState(state);
     }
 
-    return { getState, addTask, addProject, removeProject };
+    function getProject(name) {
+        const state = getState();
+
+        if (!state.hasOwnProperty(name)) throw new Error("Project name not found");
+
+        return state[name];
+    }
+
+    function checkIfProjectExists(name) {
+        const state = getState();
+        return state.hasOwnProperty(name);
+    }
+
+    return { getState, addTask, addProject, removeProject, checkIfProjectExists, getProject };
 
 })();
