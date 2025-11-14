@@ -15,6 +15,10 @@
         </div>
         <div class="tasks">
             <h2 id="activeProjectName"></h2>
+            <button id="addNewTask">+ New Task</button>
+            <div id="task-box">
+                
+            </div>
         </div>
     </div>
     <div id="modal-overlay" class="modal-overlay hidden">
@@ -27,6 +31,37 @@
             <button id="modal-cancel">Cancel</button>
             </div>
         </div>
+    </div>
+
+    <div id="modal-overlay-task" class="modal-overlay hidden">
+
+        <form action="" id="task-form" class="modal">
+            <h2>Create new task</h2>
+
+            <label for="modal-task-title">Title</label>
+            <input id="modal-task-title" type="text" name="task-title" placeholder="Task title" required />
+
+            <label for="modal-task-description">description</label>
+            <input type="text" id="modal-task-description" name="task-description">
+
+            <label for="modal-task-dueDate">Due date</label>
+            <input type="datetime-local"  id="modal-task-dueDate" name="task-dueDate">
+
+            <label for="modal-task-priority">Priority</label>
+            <select id="modal-task-priority" name="task-priority">
+                <option value="low">Low</option>
+                <option value="normal" selected>Normal</option>
+                <option value="high">High</option>
+            </select>
+
+            <label for="modal-task-notes" >Notes</label>
+            <textarea id="modal-task-notes" name="task-notes"></textarea>
+            
+            <div class="modal-btns">
+                <button id="modal-task-confirm" type="submit">Create</button>
+                <button id="modal-task-cancel" name="btn-cancel">Cancel</button>
+            </div>
+        </form>
     </div>
 </body>
 </html>

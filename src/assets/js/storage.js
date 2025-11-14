@@ -12,17 +12,18 @@ export const storage = (() => {
         return JSON.parse(localStorage.getItem(STORAGE_KEY))  || {};
     }
 
-    function addTask(pid, newTask) {
+    function addTask(newTask) {
         const state = getState();
-        if (!state[pid]) throw new Error("Invalid project id");
-        state[pid].tasks.push(newTask);
+        if (!state[newTask.project]) throw new Error("Invalid project name");
+        state[newTask.project].tasks.push(newTask.data);
 
         saveState(state);
+        return newTask.data;
     }
 
     function addProject(name) {
        const state = getState();
-       state[name] = {};
+       state[name] = {tasks:[]};
 
        saveState(state);
     }

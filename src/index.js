@@ -11,6 +11,7 @@ pubsub.on("ui:add-project", controller.addProject);
 pubsub.on("project:removed", render.projectRemoved);
 pubsub.on("ui:change-active-project", controller.changeActiveProject);
 pubsub.on("project:active-changed", render.onChangeactiveProject);
+pubsub.on("ui:add-task", controller.addTask);
 
 //load app
 controller.init();

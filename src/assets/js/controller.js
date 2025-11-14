@@ -9,7 +9,6 @@ export const controller = (() =>  {
 
     function init(){
         if (Object.keys(storage.getState()).length === 0) setFreshStartData();
-        // storage.addTask("default", new Task('New task', 'This is a test tasks', new Date("17 December, 2025 00:00:00"), "normal", "Finish it ASAP!", false));
         pubsub.emit("app:ready", {default_project: DEFAULT_PROJECT, data: storage.getState() });
     }
 
@@ -33,5 +32,12 @@ export const controller = (() =>  {
         pubsub.emit("project:active-changed", { name:projectName, data: storage.getProject(projectName) });
     }
 
-    return { init, removeProject, addProject, changeActiveProject };
+    function addTask(task) {
+        if(!task.title) throw new Error("Title is required");
+
+        const addedTask = storage.addTask({project: activeProject, data: {id: crypto.randomUUID(), title: task.title, description: task.description, dueDate: task.dueDate, priority: task.priority, notes: task.notes} });
+        pubsub.emit("task:added", addedTask);
+    }
+
+    return { init, removeProject, addProject, changeActiveProject, addTask};
 })();

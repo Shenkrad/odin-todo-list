@@ -6,7 +6,7 @@ body {
     background-color: blue;
     display: grid;
     grid-template-columns: .3fr 1fr;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 100px 1fr;
 }
 
 .container header {
@@ -16,6 +16,10 @@ body {
 
 .tasks {
     background-color: red;
+}
+
+#task-box {
+  display: grid;
 }
 
 .sidebar {
@@ -36,6 +40,8 @@ body {
   padding: 1.5rem;
   border-radius: 8px;
   min-width: 300px;
+  display: grid;
+  gap: 10px;
 }
 
 .hidden {
